@@ -200,9 +200,12 @@ class ClickhouseApi:
         self.create_database(self.database)
 
     def get_last_used_version(self, table_name):
-        if table_name in self.tables_last_record_version:
-            return self.tables_last_record_version[table_name]
-        return self.version_initial_value
+        # todo: temporary patch. We should do this at realtime replicator startup
+        # https://github.com/bakwc/mysql_ch_replicator/issues/254
+        return self.get_max_record_version(table_name)
+        #if table_name in self.tables_last_record_version:
+        #    return self.tables_last_record_version[table_name]
+        #return self.version_initial_value
 
     def set_last_used_version(self, table_name, last_used_version):
         self.tables_last_record_version[table_name] = last_used_version
